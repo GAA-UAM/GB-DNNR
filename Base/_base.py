@@ -148,7 +148,6 @@ class BaseEstimator(Params):
             model.fit(X, residuals,
                       batch_size=self.batch_size,
                       epochs=epochs,
-                      verbose=self.verbose,
                       callbacks=[es],
                       )
 
