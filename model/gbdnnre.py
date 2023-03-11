@@ -14,7 +14,7 @@ class DeepRegressor(BaseEstimator):
                  early_stopping=False,
                  random_state=None,
                  l2 = 0.01,
-                 dropuout=0.1):
+                 dropout=0.1):
 
         super().__init__(iter,
                          eta,
@@ -25,7 +25,7 @@ class DeepRegressor(BaseEstimator):
                          early_stopping,
                          random_state,
                          l2,
-                         dropuout)
+                         dropout)
 
     def _validate_y(self, y):
         self._loss = squared_loss()
