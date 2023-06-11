@@ -2,30 +2,35 @@ import numpy as np
 from Base._base import BaseEstimator
 from Base._loss import squared_loss
 
+
 class DeepRegressor(BaseEstimator):
-
-    def __init__(self,
-                 iter=10,
-                 eta=0.1,
-                 learning_rate=1e-3,
-                 total_nn=200,
-                 num_nn_step=1,
-                 batch_size=128,
-                 early_stopping=False,
-                 random_state=None,
-                 l2 = 0.01,
-                 dropout=0.1):
-
-        super().__init__(iter,
-                         eta,
-                         learning_rate,
-                         total_nn,
-                         num_nn_step,
-                         batch_size,
-                         early_stopping,
-                         random_state,
-                         l2,
-                         dropout)
+    def __init__(
+        self,
+        iter=10,
+        eta=0.1,
+        learning_rate=1e-3,
+        total_nn=200,
+        num_nn_step=1,
+        batch_size=128,
+        early_stopping=False,
+        random_state=None,
+        l2=0.01,
+        dropout=0.1,
+        record=False,
+    ):
+        super().__init__(
+            iter,
+            eta,
+            learning_rate,
+            total_nn,
+            num_nn_step,
+            batch_size,
+            early_stopping,
+            random_state,
+            l2,
+            dropout,
+            record,
+        )
 
     def _validate_y(self, y):
         self._loss = squared_loss()
@@ -36,7 +41,7 @@ class DeepRegressor(BaseEstimator):
         return self.decision_function(X)
 
     def predict_stage(self, X):
-        preds = np.ones_like(self._models[0].predict(X))*self.intercept
+        preds = np.ones_like(self._models[0].predict(X)) * self.intercept
 
         for model, step in zip(self._models, self.steps):
             preds += model.predict(X) * step
