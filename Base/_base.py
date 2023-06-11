@@ -168,6 +168,7 @@ class BaseEstimator(Params):
                 batch_size=self.batch_size,
                 epochs=epochs,
                 callbacks=[es],
+                validation_data=val_data
             )
 
             self._layer_freezing(model=model)
