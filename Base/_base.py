@@ -168,7 +168,7 @@ class BaseEstimator(Params):
                 batch_size=self.batch_size,
                 epochs=epochs,
                 callbacks=[es],
-                validation_data=val_data
+                validation_data=val_data,
             )
 
             self._layer_freezing(model=model)
@@ -181,8 +181,8 @@ class BaseEstimator(Params):
             if self.record:
                 pred_test = model.predict(x_test)
                 acum_test = acum_test + rho * pred_test
-                self.g_history["acc_val"].append(self._in_train_score(x_test, y_test))
-                self.g_history["acc_train"].append(self._in_train_score(X, y))
+                self.g_history["rmse_val_true_output"].append(self._in_train_score(x_test, y_test))
+                self.g_history["rmse_train_true_output"].append(self._in_train_score(X, y))
                 self.g_history["loss_train"].append(np.mean(self._loss(y, acum)))
                 self.g_history["loss_test"].append(
                     np.mean(self._loss(y_test, acum_test))
@@ -213,16 +213,16 @@ class BaseEstimator(Params):
             return path
 
         archives = [
-            ("loss_train.txt", self.g_history["loss_train"]),
-            ("loss_test.txt", self.g_history["loss_test"]),
-            ("rmse_train.txt", self.g_history["acc_train"]),
-            ("rmse_val.txt", self.g_history["acc_val"]),
+            ("loss_train_residual.txt", self.g_history["loss_train"]),
+            ("loss_val_residual.txt", self.g_history["loss_test"]),
+            ("loss_train_trueOutput.txt", self.g_history["rmse_train_true_output"]),
+            ("loss_val_trueOutput.txt", self.g_history["rmse_val_true_output"]),
             (
-                f"epoch_{str(epoch)}_additive_training_loss.txt",
+                f"epoch_{str(epoch)}_train_loss_true_label.txt",
                 self.history.history["loss"],
             ),
             (
-                f"epoch_{str(epoch)}_additive_val_loss.txt",
+                f"epoch_{str(epoch)}_val_loss_true_label.txt",
                 self.history.history["val_loss"],
             ),
         ]
@@ -257,8 +257,8 @@ class BaseEstimator(Params):
         self.g_history = {
             "loss_train": [],
             "loss_test": [],
-            "acc_train": [],
-            "acc_val": [],
+            "rmse_train_true_output": [],
+            "rmse_val_true_output": [],
         }
 
         self.layers = []
