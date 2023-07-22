@@ -1,3 +1,11 @@
+""" Ninja - Gradient Boosted - Deep Neural Network """
+
+# Author: Seyedsaman Emami
+# Author: Gonzalo Martínez-Muñoz
+
+# Licence: GNU Lesser General Public License v2.1 (LGPL-2.1)
+
+
 import numpy as np
 from Base._base import BaseEstimator
 from Base._loss import squared_loss

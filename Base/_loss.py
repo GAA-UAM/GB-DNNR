@@ -1,4 +1,4 @@
-""" Loss functions for Gradient Boosted - Deep Neural Network - Multi Output """
+""" Base class for Loss functions """
 
 # Author: Seyedsaman Emami
 # Author: Gonzalo Martínez-Muñoz

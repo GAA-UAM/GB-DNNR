@@ -130,3 +130,4 @@ dmypy.json
 run.py
 /records
 Records_archive
+.vscode

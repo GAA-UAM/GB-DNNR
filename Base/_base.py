@@ -1,9 +1,10 @@
-""" Gradient Boosted - Deep Neural Network - Multi Output """
+""" Ninja-GB-DNN Base Class """
 
 # Author: Seyedsaman Emami
 # Author: Gonzalo Martínez-Muñoz
 
 # Licence: GNU Lesser General Public License v2.1 (LGPL-2.1)
+import re
 import os
 import gc
 import glob
@@ -55,6 +56,29 @@ class BaseEstimator(Params):
             model.get_layer(name).trainable == False
         ), "The intermediate layer is not frozen!"
 
+        bn_layer, dropout_layer = self.find_bn_and_dropout_layers(model)
+
+        for bn, dr in zip(bn_layer, dropout_layer):
+            model.get_layer(bn).trainable = False
+            model.get_layer(dr).trainable = False
+            assert (
+            model.get_layer(bn).trainable == False
+        ), "The BN layer is not frozen!"
+
+    def find_bn_and_dropout_layers(self, model):
+        bn_pattern = r"ba\w+"
+        dropout_pattern = r"dr\w+"
+
+        bn_layers = []
+        dropout_layers = []
+        for layer in model.layers:
+            if re.findall(bn_pattern, layer.name):
+                bn_layers.append(layer.name)
+            if re.findall(dropout_pattern, layer.name):
+                dropout_layers.append(layer.name)
+
+        return bn_layers, dropout_layers
+
     def _add(self, model, step):
         cloned_model = tf.keras.models.clone_model(model)
         cloned_model.set_weights(model.get_weights())
@@ -68,9 +92,6 @@ class BaseEstimator(Params):
         regressor of the gradient boosting"""
 
         model = keras.models.Sequential(name=name)
-
-        # Normalizing the input
-        # model.add(tf.keras.layers.LayerNormalization(axis=-1))
 
         # Build the Input Layer
         model.add(
@@ -181,8 +202,12 @@ class BaseEstimator(Params):
             if self.record:
                 pred_test = model.predict(x_test)
                 acum_test = acum_test + rho * pred_test
-                self.g_history["rmse_val_true_output"].append(self._in_train_score(x_test, y_test))
-                self.g_history["rmse_train_true_output"].append(self._in_train_score(X, y))
+                self.g_history["rmse_val_true_output"].append(
+                    self._in_train_score(x_test, y_test)
+                )
+                self.g_history["rmse_train_true_output"].append(
+                    self._in_train_score(X, y)
+                )
                 self.g_history["loss_train"].append(np.mean(self._loss(y, acum)))
                 self.g_history["loss_test"].append(
                     np.mean(self._loss(y_test, acum_test))
