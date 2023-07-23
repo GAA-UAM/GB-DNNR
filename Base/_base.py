@@ -61,9 +61,7 @@ class BaseEstimator(Params):
         for bn, dr in zip(bn_layer, dropout_layer):
             model.get_layer(bn).trainable = False
             model.get_layer(dr).trainable = False
-            assert (
-            model.get_layer(bn).trainable == False
-        ), "The BN layer is not frozen!"
+            assert model.get_layer(bn).trainable == False, "The BN layer is not frozen!"
 
     def find_bn_and_dropout_layers(self, model):
         bn_pattern = r"ba\w+"
