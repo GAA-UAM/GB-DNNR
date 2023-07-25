@@ -2,9 +2,9 @@
 
 Ninja-Gradient Boosted - Deep Neural Network
 
-GB-DNN-MO is the python library for working with Gradient Boosted - Deep Neural Networks for Multi Output Regression problems (GB-DNN-MO).
+Ninja-GB-DNN is the python library for working with Gradient Boosted - Deep Neural Networks for Multi/Single Output Regression problems (Ninja-GB-DNN).
 
-# Citing 
+# Citing
 
 Please use the following BibTeX or download the bib file for citing the paper in your research.
 
@@ -39,7 +39,7 @@ Related released versions are stored on Releases.
 
 ## Date-updated
 
-11.Mar.2023
+25.Jul.2023
 
 ## Version
 
