@@ -1,4 +1,4 @@
-""" Base class for Loss functions """
+""" Base class for Loss function"""
 
 # Author: Seyedsaman Emami
 # Author: Gonzalo Martínez-Muñoz
@@ -7,7 +7,6 @@
 
 import numpy as np
 from abc import abstractmethod
-
 
 
 class loss:

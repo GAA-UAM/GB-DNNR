@@ -164,6 +164,7 @@ class BaseEstimator(Params):
             residuals = self._loss.derive(y, acum)
             residuals = residuals.astype(np.float32)
 
+
             if self.record:
                 residuals_test = self._loss.derive(y_test, acum_test)
                 residuals_test = residuals_test.astype(np.float32)
@@ -193,25 +194,29 @@ class BaseEstimator(Params):
                 epochs=epochs,
                 callbacks=[es],
                 validation_data=val_data,
+                verbose=False
             )
 
             self._layer_freezing(model=model)
 
             pred = model.predict(X)
+            if pred.shape[1]==1:
+                pred = np.squeeze(pred)
             rho = self.eta * 1
             acum = acum + rho * pred
+            print('pred shape is',pred.shape)
             self._add(model, rho)
 
             if self.record:
                 pred_test = model.predict(x_test)
+                if pred_test.shape[1]==1:
+                    pred_test = np.squeeze(pred_test)
                 acum_test = acum_test + rho * pred_test
 
                 self.g_history["loss_train"].append(np.mean(self._loss(y, acum)))
                 self.g_history["loss_test"].append(
                     np.mean(self._loss(y_test, acum_test))
                 )
-                np.savetxt(f'{i}_residual.csv', residuals, delimiter=',')
-                np.savetxt(f'{i}_residual_test.csv', residuals_test, delimiter=',')
                 self._save_records(epoch=i)
 
     def decision_function(self, X):
