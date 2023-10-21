@@ -9,6 +9,7 @@ import os
 import gc
 import glob
 import keras
+import datetime
 import numpy as np
 import tensorflow as tf
 from Base._params import Params
@@ -144,7 +145,6 @@ class BaseEstimator(Params):
 
         if self.record:
             self._validate_y(y_test)
-            val_data = (x_test, y_test)
             acum_test = np.ones_like(y_test) * self._loss.model0(y_test)
         else:
             val_data = (X, y)
@@ -163,6 +163,11 @@ class BaseEstimator(Params):
         for i in range(T):
             residuals = self._loss.derive(y, acum)
             residuals = residuals.astype(np.float32)
+
+            if self.record:
+                residuals_test = self._loss.derive(y_test, acum_test)
+                residuals_test = residuals_test.astype(np.float32)
+                val_data = (x_test, residuals_test)
 
             model = self._regressor(X=X, name=str(i))
 
@@ -200,16 +205,13 @@ class BaseEstimator(Params):
             if self.record:
                 pred_test = model.predict(x_test)
                 acum_test = acum_test + rho * pred_test
-                self.g_history["rmse_val_true_output"].append(
-                    self._in_train_score(x_test, y_test)
-                )
-                self.g_history["rmse_train_true_output"].append(
-                    self._in_train_score(X, y)
-                )
+
                 self.g_history["loss_train"].append(np.mean(self._loss(y, acum)))
                 self.g_history["loss_test"].append(
                     np.mean(self._loss(y_test, acum_test))
                 )
+                np.savetxt(f'{i}_residual.csv', residuals, delimiter=',')
+                np.savetxt(f'{i}_residual_test.csv', residuals_test, delimiter=',')
                 self._save_records(epoch=i)
 
     def decision_function(self, X):
@@ -222,35 +224,22 @@ class BaseEstimator(Params):
 
         return raw_predictions
 
-    def _in_train_score(self, X, y):
-        def rmse(y, pred):
-            output_errors = np.sqrt(np.average((y - pred) ** 2, axis=0))
-            return np.average(output_errors)
-
-        pred = self.decision_function(X)
-        return rmse(y, pred)
-
     def _save_records(self, epoch):
-        def _path(archive):
-            path = os.path.join("records", archive)
-            return path
-
+        
         archives = [
-            ("loss_train_residual.txt", self.g_history["loss_train"]),
-            ("loss_val_residual.txt", self.g_history["loss_test"]),
-            ("loss_train_trueOutput.txt", self.g_history["rmse_train_true_output"]),
-            ("loss_val_trueOutput.txt", self.g_history["rmse_val_true_output"]),
+            ("loss_train_residual.csv", self.g_history["loss_train"]),
+            ("loss_val_residual.csv", self.g_history["loss_test"]),
             (
-                f"epoch_{str(epoch)}_train_loss_true_label.txt",
+                f"epoch_{str(epoch)}_train_loss_true_label.csv",
                 self.history.history["loss"],
             ),
             (
-                f"epoch_{str(epoch)}_val_loss_true_label.txt",
+                f"epoch_{str(epoch)}_val_loss_true_label.csv",
                 self.history.history["val_loss"],
             ),
         ]
         for archive in archives:
-            np.savetxt(_path(archive[0]), archive[1])
+            np.savetxt(archive[0], archive[1])
 
     def _check_params(self):
         """Check validity of parameters."""
@@ -258,12 +247,10 @@ class BaseEstimator(Params):
         tf.keras.backend.clear_session()
 
         if self.record:
-            try:
-                os.mkdir("records")
-            except:
-                files = glob.glob("*/records/*")
-                for f in files:
-                    os.remove(f)
+            current_time = datetime.datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
+            records = f'records_{current_time}'
+            os.mkdir(records)
+            os.chdir(records)
 
         if self.total_nn < self.num_nn_step:
             raise ValueError(
@@ -280,8 +267,6 @@ class BaseEstimator(Params):
         self.g_history = {
             "loss_train": [],
             "loss_test": [],
-            "rmse_train_true_output": [],
-            "rmse_val_true_output": [],
         }
 
         self.layers = []
