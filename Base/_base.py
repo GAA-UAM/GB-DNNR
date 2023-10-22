@@ -204,7 +204,6 @@ class BaseEstimator(Params):
                 pred = np.squeeze(pred)
             rho = self.eta * 1
             acum = acum + rho * pred
-            print('pred shape is',pred.shape)
             self._add(model, rho)
 
             if self.record:
