@@ -1,8 +1,8 @@
-# Ninja-GB-DNN
+# GB-DNNR
 
-Ninja-Gradient Boosted - Deep Neural Network
+Gradient Boosted - Deep Neural Network Regression
 
-Ninja-GB-DNN is the python library for working with Gradient Boosted - Deep Neural Networks for Multi/Single Output Regression problems (Ninja-GB-DNN).
+GB-DNNR is the Python library for working with Gradient Boosted - Deep Neural Networks for Multi/Single Output Regression problems (GB-DNNR).
 
 # Citing
 
