@@ -11,7 +11,7 @@ Please use the following BibTeX or download the bib file for citing the paper in
 Or use the CITATION to cite the package and codes.
 
 ```
-@article{emami2023gbcnn,
+@article{emami2023gbdnnr,
   title={Gradient Boosted - Deep Neural Network - Multi Output},
   author={Emami, Seyedsaman and Martínez-Muñoz, Gonzalo},
   journal={},
