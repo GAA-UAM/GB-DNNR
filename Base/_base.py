@@ -1,4 +1,4 @@
-""" Ninja-GB-DNN Base Class """
+"""GB-DNNR - Gradient Boosted - Deep Neural Network Regression Base Class"""
 
 # Author: Seyedsaman Emami
 # Author: Gonzalo Martínez-Muñoz
@@ -32,6 +32,7 @@ class BaseEstimator(Params):
         l2=0.01,
         dropout=0.1,
         record=False,
+        freezing=True,
     ):
         self.iter = iter
         self.eta = eta
@@ -44,6 +45,7 @@ class BaseEstimator(Params):
         self.l2 = l2
         self.dropout = dropout
         self.record = record
+        self.freezing = freezing
 
     @abstractmethod
     def _validate_y(self, y):
@@ -129,10 +131,11 @@ class BaseEstimator(Params):
         # Output layers
         model.add(keras.layers.Dense(self.n_classes))
 
-        assert model.trainable == True, "Check the model trainability"
-        assert (
-            model.layers[-2].trainable == True
-        ), "The new hidden layer should be trainable."
+        if self.freezing:
+            assert model.trainable == True, "Check the model trainability"
+            assert (
+                model.layers[-2].trainable == True
+            ), "The new hidden layer should be trainable."
 
         return model
 
@@ -164,7 +167,6 @@ class BaseEstimator(Params):
             residuals = self._loss.derive(y, acum)
             residuals = residuals.astype(np.float32)
 
-
             if self.record:
                 residuals_test = self._loss.derive(y_test, acum_test)
                 residuals_test = residuals_test.astype(np.float32)
@@ -194,13 +196,14 @@ class BaseEstimator(Params):
                 epochs=epochs,
                 callbacks=[es],
                 validation_data=val_data,
-                verbose=False
+                verbose=False,
             )
 
-            self._layer_freezing(model=model)
+            if self.freezing:
+                self._layer_freezing(model=model)
 
             pred = model.predict(X)
-            if pred.shape[1]==1:
+            if pred.shape[1] == 1:
                 pred = np.squeeze(pred)
             rho = self.eta * 1
             acum = acum + rho * pred
@@ -208,7 +211,7 @@ class BaseEstimator(Params):
 
             if self.record:
                 pred_test = model.predict(x_test)
-                if pred_test.shape[1]==1:
+                if pred_test.shape[1] == 1:
                     pred_test = np.squeeze(pred_test)
                 acum_test = acum_test + rho * pred_test
 
@@ -229,7 +232,6 @@ class BaseEstimator(Params):
         return raw_predictions
 
     def _save_records(self, epoch):
-        
         archives = [
             ("loss_train_residual.csv", self.g_history["loss_train"]),
             ("loss_val_residual.csv", self.g_history["loss_test"]),
@@ -252,7 +254,7 @@ class BaseEstimator(Params):
 
         if self.record:
             current_time = datetime.datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
-            records = f'records_{current_time}'
+            records = f"records_{current_time}"
             os.mkdir(records)
             os.chdir(records)
 

@@ -1,4 +1,4 @@
-""" Ninja - Gradient Boosted - Deep Neural Network """
+"""GB-DNNR - Gradient Boosted - Deep Neural Network Regression"""
 
 # Author: Seyedsaman Emami
 # Author: Gonzalo Martínez-Muñoz
@@ -25,6 +25,7 @@ class DeepRegressor(BaseEstimator):
         l2=0.01,
         dropout=0.1,
         record=False,
+        freezing=True,
     ):
         super().__init__(
             iter,
@@ -38,6 +39,7 @@ class DeepRegressor(BaseEstimator):
             l2,
             dropout,
             record,
+            freezing,
         )
 
     def _validate_y(self, y):

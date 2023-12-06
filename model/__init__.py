@@ -1,3 +1,3 @@
-from .ninja import DeepRegressor
+from .gbdnnr import DeepRegressor
 
 __all__=["DeepRegressor"]
