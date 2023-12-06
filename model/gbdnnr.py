@@ -20,7 +20,7 @@ class DeepRegressor(BaseEstimator):
         total_nn=200,
         num_nn_step=1,
         batch_size=128,
-        early_stopping=False,
+        early_stopping=10,
         random_state=None,
         l2=0.01,
         dropout=0.1,

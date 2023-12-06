@@ -3,23 +3,22 @@ from collections import defaultdict
 
 
 class Params:
-
     @classmethod
     def _get_param_names(cls):
-
         init = getattr(cls.__init__, "deprecated_original", cls.__init__)
         if init is object.__init__:
             return []
 
         init_signature = inspect.signature(init)
-        parameters = [p for p in init_signature.parameters.values()
-                      if p.name != "self" and p.kind != p.VAR_KEYWORD
-                      ]
+        parameters = [
+            p
+            for p in init_signature.parameters.values()
+            if p.name != "self" and p.kind != p.VAR_KEYWORD
+        ]
 
         return sorted([p.name for p in parameters])
 
     def get_params(self, deep=True):
-
         out = dict()
         for key in self._get_param_names():
             value = getattr(self, key)
