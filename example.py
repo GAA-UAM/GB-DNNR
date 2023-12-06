@@ -50,7 +50,7 @@ model = DeepRegressor(
     iter=200,
     eta=0.75,
     learning_rate=0.1,
-    total_nn=300,
+    total_nn=600,
     num_nn_step=100,
     batch_size=128,
     early_stopping=None,
@@ -58,12 +58,10 @@ model = DeepRegressor(
     l2=0.001,
     dropout=0.1,
     record=True,
-    freezing=False,
+    freezing=True,
 )
 
 model.fit(x_train, y_train, x_test, y_test)
 mean_squared_error(
     y_test, model.predict(x_test), multioutput="raw_values", squared=False
 )
-
-# %%

@@ -7,7 +7,6 @@
 import re
 import os
 import gc
-import glob
 import keras
 import datetime
 import numpy as np
