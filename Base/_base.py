@@ -52,18 +52,22 @@ class BaseEstimator(Params):
 
     def _layer_freezing(self, model):
         name = model.layers[-2].name
-        model.get_layer(name).trainable = False
+        model.get_layer(name).trainable = False if self.freezing else True
         self.layers.append(model.get_layer(name))
-        assert (
-            model.get_layer(name).trainable == False
-        ), "The intermediate layer is not frozen!"
 
-        bn_layer, dropout_layer = self.find_bn_and_dropout_layers(model)
+        if self.freezing:
+            bn_layer, dropout_layer = self.find_bn_and_dropout_layers(model)
 
-        for bn, dr in zip(bn_layer, dropout_layer):
-            model.get_layer(bn).trainable = False
-            model.get_layer(dr).trainable = False
-            assert model.get_layer(bn).trainable == False, "The BN layer is not frozen!"
+            for bn, dr in zip(bn_layer, dropout_layer):
+                model.get_layer(bn).trainable = False
+                model.get_layer(dr).trainable = False
+                assert (
+                    model.get_layer(bn).trainable == False
+                ), "The BN layer is not frozen!"
+
+            assert (
+                model.get_layer(name).trainable == False
+            ), "The intermediate layer is not frozen!"
 
     def find_bn_and_dropout_layers(self, model):
         bn_pattern = r"ba\w+"
@@ -198,8 +202,7 @@ class BaseEstimator(Params):
                 verbose=False,
             )
 
-            if self.freezing:
-                self._layer_freezing(model=model)
+            self._layer_freezing(model=model)
 
             pred = model.predict(X)
             if pred.shape[1] == 1:
