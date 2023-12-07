@@ -2,35 +2,38 @@
 import os
 import numpy as np
 import pandas as pd
+import tensorflow as tf
 from scipy.io import arff
 from model.gbdnnr import DeepRegressor
-from sklearn.metrics import mean_squared_error
+from sklearn.impute import SimpleImputer
 from sklearn.preprocessing import StandardScaler
 from sklearn.model_selection import train_test_split
 
-
-name = "oes10.arff"
-d = 298
-random_state = 1
-
+random_state = 111
 np.random.seed(random_state)
+path = r"D:\Ph.D\Programming\Datasets\Regression\mtr_datasets"
 
 
-path = r"D:\Academic\Ph.D\Programming\Datasets\Regression\mtr_datasets"
+def dataset(name):
+    def dt(path):
+        df = arff.loadarff(path)
+        df = pd.DataFrame(df[0])
+        return df
 
-
-def dt(path):
-    df = arff.loadarff(path)
-    df = pd.DataFrame(df[0])
-    return df
-
-
-def df(name, d):
     dt_name = name
     dt_path = os.path.join(path, dt_name)
     df = dt(dt_path)
+    info = pd.read_csv(os.path.join(path, "info.txt"))
+    d = int(info.d.loc[info["Dataset"] == name])
+
+    if name == "rf1.arff" or "rf2.arff":
+        for i in df.columns:
+            df[i] = df[i].fillna(0)
     X = (df.iloc[:, :d]).values
     y = (df.iloc[:, d:]).values
+    if name == "scpf.arff":
+        imp = SimpleImputer(missing_values=np.nan, strategy="most_frequent")
+        X = imp.fit_transform(X)
 
     scl = StandardScaler()
     X = scl.fit_transform(X)
@@ -38,9 +41,10 @@ def df(name, d):
     return X, y
 
 
-X, y = df(name, d)
-# y = y[:, 3]
+info = pd.read_csv(os.path.join(path, "info.txt"))
+print(info.Dataset)
 
+X, y = dataset("scm20d.arff")
 
 x_train, x_test, y_train, y_test = train_test_split(
     X, y, test_size=0.2, random_state=random_state
@@ -58,10 +62,20 @@ model = DeepRegressor(
     l2=0.001,
     dropout=0.1,
     record=True,
-    freezing=True,
+    freezing=False,
 )
 
 model.fit(x_train, y_train, x_test, y_test)
-mean_squared_error(
-    y_test, model.predict(x_test), multioutput="raw_values", squared=False
+print(model.score(x_test, y_test))
+
+
+trained_model = model._models[-1]
+
+trainable_params = sum(
+    [tf.keras.backend.count_params(w) for w in trained_model.trainable_weights]
 )
+non_trainable_params = sum(
+    [tf.keras.backend.count_params(w) for w in trained_model.non_trainable_weights]
+)
+print("Trainable parameters:", trainable_params)
+print("Non-trainable parameters:", non_trainable_params)
