@@ -1,5 +1,6 @@
 # %%
 import os
+import time
 import numpy as np
 import pandas as pd
 import tensorflow as tf
@@ -42,9 +43,9 @@ def dataset(name):
 
 
 info = pd.read_csv(os.path.join(path, "info.txt"))
-print(info.Dataset)
+# print(info.Dataset)
 
-X, y = dataset("scm20d.arff")
+X, y = dataset("atp1d.arff")
 
 x_train, x_test, y_train, y_test = train_test_split(
     X, y, test_size=0.2, random_state=random_state
@@ -52,22 +53,23 @@ x_train, x_test, y_train, y_test = train_test_split(
 
 model = DeepRegressor(
     iter=200,
-    eta=0.75,
-    learning_rate=0.1,
+    eta=1,
+    learning_rate=0.01,
     total_nn=600,
     num_nn_step=100,
     batch_size=128,
-    early_stopping=None,
+    early_stopping=5,
     random_state=random_state,
-    l2=0.001,
+    l2=0.1,
     dropout=0.1,
     record=True,
-    freezing=False,
+    freezing=True,
 )
 
+t0 = time.process_time()
 model.fit(x_train, y_train, x_test, y_test)
-print(model.score(x_test, y_test))
-
+print("time", time.process_time() - t0)
+print("score", model.score(x_test, y_test))
 
 trained_model = model._models[-1]
 
