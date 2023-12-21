@@ -21,7 +21,7 @@ f you use this package, please [cite](CITATION.cff), or if you are using GB-DNNR
 - [Seyedsaman Emami](https://github.com/samanemami)
 
 # Requirements
-This package takes advantage of the following libraries:
+This package takes advantage of the following libraries (Python 3.x):
 
 - Numpy
 - TensorFlow 2.13.0 
@@ -30,28 +30,23 @@ This package takes advantage of the following libraries:
 # Keywords
 Gradient Boosting, Deep Neural Network, Multi-output regression
 
-
-
 # License
-
 The package is licensed under the [GNU Lesser General Public License v2.1](https://github.com/GAA-UAM/GBNN/blob/main/LICENSE).
 
 # Documentation
-
 For more information, examples, etc, please refer to the [Wiki](https://github.com/GAA-UAM/GB-DNNR/wiki).
 
 # Development
-
 Our latest algorithm is available on the `main` branch of the repository.
 
-## Date-released
+## Contributions
+Contributions to the GB-DNNR project are welcome. Feel free to fork the repository, make changes, and submit pull requests.
 
-21.Dec.2023
+## Date-released
+21.12.2023
 
 ## Date-updated
-
-21.Dec.2023
+21.12.2023
 
 ## Version
-
 0.0.1
