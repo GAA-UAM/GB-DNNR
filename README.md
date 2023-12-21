@@ -1,8 +1,8 @@
 # GB-DNNR
 
-Gradient Boosted - Deep Neural Network Regression
+Gradient Boosted - Deep Neural Network Regression.
 
-GB-DNNR is the Python library for working with Gradient Boosted - Deep Neural Networks for Multi/Single Output Regression problems (GB-DNNR).
+GB-DNNR is the Python library for working with Gradient Boosted - Deep Neural Network Regression (GBDNNR).
 
 # Citing
 
@@ -12,7 +12,7 @@ Or use the CITATION to cite the package and codes.
 
 ```
 @article{emami2023gbdnnr,
-  title={Gradient Boosted - Deep Neural Network - Multi Output},
+  title={Deep Learning for Multi-Output Regression using Gradient Boosting},
   author={Emami, Seyedsaman and Martínez-Muñoz, Gonzalo},
   journal={},
   year={2023}
@@ -25,21 +25,19 @@ The package is licensed under the [GNU Lesser General Public License v2.1](https
 
 # Documentation
 
-For more information, please refer to the Wiki.
+For more information, examples, etc, please refer to the [Wiki](https://github.com/GAA-UAM/GB-DNNR/wiki).
 
 # Development
 
 Our latest algorithm is available on the `main` branch of the repository.
 
-Related released versions are stored on Releases.
-
 ## Date-released
 
-11.Mar.2023
+21.Dec.2023
 
 ## Date-updated
 
-06.Dec.2023
+21.Dec.2023
 
 ## Version
 
