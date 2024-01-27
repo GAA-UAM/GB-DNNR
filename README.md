@@ -6,7 +6,8 @@ GB-DNNR is the Python library for working with Gradient Boosted - Deep Neural Ne
 
 # Citing
 
-f you use this package, please [cite](CITATION.cff), or if you are using GB-DNNR in your paper, please cite our work GB-DNNR.
+- If you use this package, please [cite](CITATION.cff).
+- If you employ GB-DNNR in your research paper, please cite our work by citing the following references.
 
 ```
 @ARTICLE{10415168,
@@ -17,6 +18,8 @@ f you use this package, please [cite](CITATION.cff), or if you are using GB-DNNR
   keywords={Deep Neural Network;Gradient Boosting;Multi-Output Regression},
   doi={10.1109/ACCESS.2024.3359115}}
 ```
+- An alternative method is to utilize the provided [bib](ref.bib) file for referencing our work. 
+
 # Key members 
 - [Gonzalo Martínez-Muñoz](https://github.com/gmarmu)
 - [Seyedsaman Emami](https://github.com/samanemami)
