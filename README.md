@@ -2,7 +2,7 @@
 
 Gradient Boosted - Deep Neural Network Regression.
 
-GB-DNNR is the Python library for working with Gradient Boosted - Deep Neural Network Regression (GBDNNR).
+GB-DNNR is the Python library for working with Gradient Boosted - Deep Neural Network Regression (GB-DNNR).
 
 # Citing
 
