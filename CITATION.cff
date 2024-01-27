@@ -12,4 +12,4 @@ version: 0.0.1
 date-released: 2023-12-21
 Repository: "https://github.com/GAA-UAM/GB-DNNR"
 Paper: "Deep Learning for Multi-Output Regression using Gradient Boosting"
-doi="10.1109/ACCESS.2024.3359115"
+doi: "10.1109/ACCESS.2024.3359115"
