@@ -14,7 +14,7 @@ f you use this package, please [cite](CITATION.cff), or if you are using GB-DNNR
   journal={IEEE Access}, 
   title={Deep Learning for Multi-Output Regression using Gradient Boosting}, 
   year={2024},
-  keywords={Artificial neural networks;Training;Multitasking;Boosting;Task analysis;Predictive models;Neurons;Deep Neural Network;Gradient Boosting;Multi-Output Regression},
+  keywords={Deep Neural Network;Gradient Boosting;Multi-Output Regression},
   doi={10.1109/ACCESS.2024.3359115}}
 ```
 # Key members 
