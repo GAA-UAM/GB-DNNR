@@ -10,13 +10,15 @@ GB-DNNR is the Python library for working with Gradient Boosted - Deep Neural Ne
 - If you employ GB-DNNR in your research paper, please cite our work by citing the following references.
 
 ```
-@ARTICLE{10415168,
-  author={Emami, Seyedsaman and Martínez-Muñoz, Gonzalo},
-  journal={IEEE Access}, 
-  title={Deep Learning for Multi-Output Regression using Gradient Boosting}, 
-  year={2024},
-  keywords={Deep Neural Network;Gradient Boosting;Multi-Output Regression},
-  doi={10.1109/ACCESS.2024.3359115}}
+@article{10415168,
+  author   = {Emami, Seyedsaman and Martínez-Muñoz, Gonzalo},
+  journal  = {IEEE Access},
+  title    = {Deep Learning for Multi-Output Regression Using Gradient Boosting},
+  year     = {2024},
+  volume   = {12},
+  pages    = {17760-17772},
+  doi      = {10.1109/ACCESS.2024.3359115}
+}
 ```
 - An alternative method is to utilize the provided [bib](ref.bib) file for referencing our work. 
 
